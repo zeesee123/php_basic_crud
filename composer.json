@@ -1,0 +1,17 @@
+{
+    "name": "91987/job_php",
+    "autoload": {
+        "psr-4": {
+            "91987\\JobPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zeesee123",
+            "email": "zubinchadha@gmail.com"
+        }
+    ],
+    "require": {
+        "ramsey/uuid": "^4.7"
+    }
+}
