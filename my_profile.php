@@ -28,6 +28,9 @@ echo Uuid::uuid4()->toString();
  }
 
 
+ $session_msg='';
+
+
  if(isset($_POST['save'])){
 
   echo 'you just tried to save stuff';
@@ -84,9 +87,9 @@ echo Uuid::uuid4()->toString();
 
         $sql="UPDATE users set avatar='$filename' where id='$id'";
 
-        $result=mysqli_query($con,$sql);
+        $result_1=mysqli_query($con,$sql);
 
-        if($result){
+        if($result_1){
 
           if(!empty($ogimg)){
 
@@ -97,6 +100,9 @@ echo Uuid::uuid4()->toString();
           }
           
           $_SESSION['avatar']=$filename;
+
+          $session_msg='<div class="alert alert-success">
+          profile updated</div>';
           
 
           echo 'your work is done';
@@ -117,6 +123,30 @@ echo Uuid::uuid4()->toString();
     // $ext=pathinfo($_FILES[]);
 
     
+  }
+
+  if(isset($_POST['username']) && isset($_POST['email'])){
+
+    $username=htmlspecialchars($_POST['username']);
+    $email=htmlspecialchars($_POST['email']);
+
+    $sql="UPDATE users set username='$username',email='$email' where id='$id'";
+
+    $result=mysqli_query($con,$sql);
+
+    if($result){
+
+      $session_msg='<div class="alert alert-success">
+      profile updated</div>';
+
+      $_SESSION['user']=$username;
+      $_SESSION['email']=$email;
+
+
+    }
+
+
+
   }
  }
 
@@ -164,6 +194,9 @@ echo Uuid::uuid4()->toString();
 </div>
 
 
+<div>
+  <?=$session_msg?>
+</div>
 <form action="" enctype="multipart/form-data" method="POST">
 
 
@@ -180,12 +213,12 @@ echo Uuid::uuid4()->toString();
 
 
 <div class="mb-3">
-<input type="name" name="username" class="form-control"  placeholder="enter your username" value="<?=$array['username']?>">
+<input type="text" name="username" class="form-control"  placeholder="enter your username" value="<?=$_SESSION['user']?>">
 </div>
 
 
 <div class="mb-3">
-<input type="email" name="email" class="form-control"  placeholder="enter your email" value="<?=$array['email']?>">
+<input type="email" name="email" class="form-control"  placeholder="enter your email" value="<?=$_SESSION['email']?>">
 </div>
 
 
