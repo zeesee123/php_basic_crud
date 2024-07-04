@@ -36,6 +36,25 @@ echo Uuid::uuid4()->toString();
 
   if(isset($_FILES['avatar'])){
 
+    $ogimg='';
+
+    $sql="SELECT * from users where id='$id'";
+
+    $result=mysqli_query($con,$sql);
+
+    if($result && mysqli_num_rows($result)>0){
+
+      $ar=mysqli_fetch_assoc($result);
+
+      if($ar['avatar']){
+
+        $ogimg=$ar['avatar'];
+      }
+
+      
+
+    }
+
     // $_FILES['']
     // $filename=
     $tmp_name=$_FILES['avatar']['tmp_name'];
@@ -68,6 +87,17 @@ echo Uuid::uuid4()->toString();
         $result=mysqli_query($con,$sql);
 
         if($result){
+
+          if(!empty($ogimg)){
+
+            $old_path='public/avatar/'.$ogimg;
+
+            unlink($old_path);
+
+          }
+          
+          $_SESSION['avatar']=$filename;
+          
 
           echo 'your work is done';
         }else{
